@@ -37,6 +37,10 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+#ifdef UBINOS_PRESENT
+#include <ubinos.h>
+#endif
+
 #include "ble_conn.h"
 #include "conn_mw_ble.h"
 #include "ble_serialization.h"
@@ -280,6 +284,9 @@ uint32_t conn_mw_ble_enable(uint8_t const * const p_rx_buf,
 
     uint32_t app_ram_base;
 
+#ifdef UBINOS_PRESENT
+    volatile uint32_t ram_start = (uint32_t) (UBINOS__BSP__LINK_MEMMAP_RAM_ORIGIN);
+#else
 /*lint --e{10} --e{19} --e{27} --e{40} --e{529} -save suppress Error 27: Illegal character */
 #if defined(_WIN32) ||  defined(__unix) || defined(__APPLE__)
     uint32_t ram_start = 0;
@@ -293,6 +300,7 @@ uint32_t conn_mw_ble_enable(uint8_t const * const p_rx_buf,
     extern uint32_t __data_start__;
     volatile uint32_t ram_start = (uint32_t) &__data_start__;
 #endif
+#endif /* UBINOS_PRESENT */
     app_ram_base = ram_start;
     uint32_t err_code = NRF_SUCCESS;
     uint32_t sd_err_code;
@@ -385,6 +393,9 @@ uint32_t conn_mw_ble_cfg_set(uint8_t const * const p_rx_buf,
 
     uint32_t app_ram_base;
 
+#ifdef UBINOS_PRESENT
+    volatile uint32_t ram_start = (uint32_t) (UBINOS__BSP__LINK_MEMMAP_RAM_ORIGIN);
+#else
 /*lint --e{10} --e{19} --e{27} --e{40} --e{529} -save suppress Error 27: Illegal character */
 #if defined(_WIN32) ||  defined(__unix) || defined(__APPLE__)
     uint32_t ram_start = 0;
@@ -398,6 +409,7 @@ uint32_t conn_mw_ble_cfg_set(uint8_t const * const p_rx_buf,
     extern uint32_t __data_start__;
     volatile uint32_t ram_start = (uint32_t) &__data_start__;
 #endif
+#endif /* UBINOS_PRESENT */
     app_ram_base = ram_start;
     uint32_t err_code = NRF_SUCCESS;
     uint32_t sd_err_code;

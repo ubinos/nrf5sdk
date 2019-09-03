@@ -72,9 +72,13 @@
 #define APP_BLE_CONN_CFG_TAG      1                                     /**< Tag that refers to the BLE stack configuration that is set with @ref sd_ble_cfg_set. The default tag is @ref APP_BLE_CONN_CFG_TAG. */
 #define APP_BLE_OBSERVER_PRIO     3                                     /**< BLE observer priority of the application. There is no need to modify this value. */
 
+#if !defined(ENABLE_TRACE)
 #define CENTRAL_SCANNING_LED      BSP_BOARD_LED_0
 #define CENTRAL_CONNECTED_LED     BSP_BOARD_LED_1
 #define LEDBUTTON_LED             BSP_BOARD_LED_2                       /**< LED to indicate a change of state of the Button characteristic on the peer. */
+#else
+#define LEDBUTTON_LED             BSP_BOARD_LED_0                       /**< LED to be toggled with the help of the LED Button Service. */
+#endif /* !defined(ENABLE_TRACE) */
 
 #define LEDBUTTON_BUTTON          BSP_BUTTON_0                          /**< Button that writes to the LED characteristic of the peer. */
 #define BUTTON_DETECTION_DELAY    APP_TIMER_TICKS(50)                   /**< Delay from a GPIOTE event until a button is reported as pushed (in number of timer ticks). */
@@ -164,7 +168,9 @@ static void scan_start(void)
     ret = nrf_ble_scan_start(&m_scan);
     APP_ERROR_CHECK(ret);
     // Turn on the LED to signal scanning.
+#if !defined(ENABLE_TRACE)
     bsp_board_led_on(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
 }
 
 
@@ -252,15 +258,21 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
             // Update LEDs status and check whether it is needed to look for more
             // peripherals to connect to.
+#if !defined(ENABLE_TRACE)
             bsp_board_led_on(CENTRAL_CONNECTED_LED);
+#endif /* !defined(ENABLE_TRACE) */
             if (ble_conn_state_central_conn_count() == NRF_SDH_BLE_CENTRAL_LINK_COUNT)
             {
+#if !defined(ENABLE_TRACE)
                 bsp_board_led_off(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
             }
             else
             {
                 // Resume scanning.
+#if !defined(ENABLE_TRACE)
                 bsp_board_led_on(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
                 scan_start();
             }
         } break; // BLE_GAP_EVT_CONNECTED
@@ -279,14 +291,18 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
                 APP_ERROR_CHECK(err_code);
 
                 // Turn off the LED that indicates the connection.
+#if !defined(ENABLE_TRACE)
                 bsp_board_led_off(CENTRAL_CONNECTED_LED);
+#endif /* !defined(ENABLE_TRACE) */
             }
 
             // Start scanning.
             scan_start();
 
             // Turn on the LED for indicating scanning.
+#if !defined(ENABLE_TRACE)
             bsp_board_led_on(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
 
         } break;
 

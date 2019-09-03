@@ -55,6 +55,11 @@ NRF_LOG_BACKEND_RTT_DEF(rtt_log_backend);
 NRF_LOG_BACKEND_UART_DEF(uart_log_backend);
 #endif
 
+#if defined(NRF_LOG_BACKEND_DTTY_ENABLED) && NRF_LOG_BACKEND_DTTY_ENABLED
+#include "nrf_log_backend_dtty.h"
+NRF_LOG_BACKEND_DTTY_DEF(dtty_log_backend);
+#endif
+
 void nrf_log_default_backends_init(void)
 {
     int32_t backend_id = -1;
@@ -71,6 +76,13 @@ void nrf_log_default_backends_init(void)
     backend_id = nrf_log_backend_add(&uart_log_backend, NRF_LOG_SEVERITY_DEBUG);
     ASSERT(backend_id >= 0);
     nrf_log_backend_enable(&uart_log_backend);
+#endif
+
+#if defined(NRF_LOG_BACKEND_DTTY_ENABLED) && NRF_LOG_BACKEND_DTTY_ENABLED
+    nrf_log_backend_dtty_init();
+    backend_id = nrf_log_backend_add(&dtty_log_backend, NRF_LOG_SEVERITY_DEBUG);
+    ASSERT(backend_id >= 0);
+    nrf_log_backend_enable(&dtty_log_backend);
 #endif
 }
 #endif

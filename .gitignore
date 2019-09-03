@@ -6,3 +6,5 @@
 /.project
 /.cproject
 /.pydevproject
+
+_build/

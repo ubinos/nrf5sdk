@@ -68,9 +68,13 @@
 #include "nrf_log_default_backends.h"
 
 
+#if !defined(ENABLE_TRACE)
 #define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0                     /**< Scanning LED will be on when the device is scanning. */
 #define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1                     /**< Connected LED will be on when the device is connected. */
 #define LEDBUTTON_LED                   BSP_BOARD_LED_2                     /**< LED to indicate a change of state of the the Button characteristic on the peer. */
+#else
+#define LEDBUTTON_LED                   BSP_BOARD_LED_0                     /**< LED to be toggled with the help of the LED Button Service. */
+#endif /* !defined(ENABLE_TRACE) */
 
 #define SCAN_INTERVAL                   0x00A0                              /**< Determines scan interval in units of 0.625 millisecond. */
 #define SCAN_WINDOW                     0x0050                              /**< Determines scan window in units of 0.625 millisecond. */
@@ -131,8 +135,10 @@ static void scan_start(void)
     err_code = nrf_ble_scan_start(&m_scan);
     APP_ERROR_CHECK(err_code);
 
+#if !defined(ENABLE_TRACE)
     bsp_board_led_off(CENTRAL_CONNECTED_LED);
     bsp_board_led_on(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
 }
 
 
@@ -204,10 +210,12 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             err_code = ble_db_discovery_start(&m_db_disc, p_gap_evt->conn_handle);
             APP_ERROR_CHECK(err_code);
 
+#if !defined(ENABLE_TRACE)
             // Update LEDs status, and check if we should be looking for more
             // peripherals to connect to.
             bsp_board_led_on(CENTRAL_CONNECTED_LED);
             bsp_board_led_off(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
         } break;
 
         // Upon disconnection, reset the connection handle of the peer which disconnected, update
@@ -495,8 +503,10 @@ int main(void)
     NRF_LOG_INFO("Blinky CENTRAL example started.");
     scan_start();
 
+#if !defined(ENABLE_TRACE)
     // Turn on the LED to signal scanning.
     bsp_board_led_on(CENTRAL_SCANNING_LED);
+#endif /* !defined(ENABLE_TRACE) */
 
     // Enter main loop.
     for (;;)

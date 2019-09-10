@@ -20,6 +20,7 @@ if(INCLUDE__NRF5SDK)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/cdc_acm)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/rtt)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/uart)
+    include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/dtty)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/crc16)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/crc32)
     include_directories(${_tmp_source_dir}/nRF5_SDK/components/libraries/crypto)
@@ -98,51 +99,81 @@ if(INCLUDE__NRF5SDK)
     
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/balloc/nrf_balloc.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/button/app_button.c)
+    
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/crc16/crc16.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/crc32/crc32.c)
+    
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/nrf_cli.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/cdc_acm/nrf_cli_cdc_acm.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/rtt/nrf_cli_rtt.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/uart/nrf_cli_uart.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/cli/dtty/nrf_cli_dtty.c)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/experimental_section_vars/nrf_section_iter.c)
     
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/fds/fds.c)
+
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/fifo/app_fifo.c)
+
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/fstorage/nrf_fstorage.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/fstorage/nrf_fstorage_nvmc.c)
     
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/hardfault/hardfault_implementation.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/hardfault/nrf52/handler/hardfault_handler_gcc.c)
     
-    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_default_backends.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_frontend.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_str_formatter.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_backend_serial.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_backend_uart.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_backend_rtt.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_backend_flash.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_backend_dtty.c)
-
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/log/src/nrf_log_default_backends.c)
+  
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/memobj/nrf_memobj.c)
+    
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/mpu/nrf_mpu_lib.c)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/pwr_mgmt/nrf_pwr_mgmt.c)
+
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/queue/nrf_queue.c)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/ringbuf/nrf_ringbuf.c)
     
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/scheduler/app_scheduler.c)
+
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/sortlist/nrf_sortlist.c)
+
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/stack_guard/nrf_stack_guard.c)
+
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/strerror/nrf_strerror.c)
     
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/timer/app_timer.c)
-    
+
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/util/app_error.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/util/app_error_handler_gcc.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/util/app_error_weak.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/util/app_util_platform.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/util/nrf_assert.c)
     
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/fnmatch/fnmatch.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/fprintf/nrf_fprintf.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/fprintf/nrf_fprintf_format.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/utf_converter/utf.c)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/integration/nrfx/legacy/nrf_drv_clock.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/integration/nrfx/legacy/nrf_drv_power.c)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_clock.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_gpiote.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_systick.c)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_clock.c)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_power.c)    
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_rtc.c)    
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/prs/nrfx_prs.c)
     
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/hal/nrf_nvmc.c)
+
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/soc/nrfx_atomic.c)
     
     if(NRF5SDK__UART_ENABLED)
@@ -156,6 +187,19 @@ if(INCLUDE__NRF5SDK)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_uarte.c)
     
     endif(NRF5SDK__UART_ENABLED)
+    
+    
+    if(NRF5SDK__APP_TIMER_V2)
+    
+        set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/timer/experimental/app_timer2.c)
+
+        if(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED)
+        
+            set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/timer/experimental/drv_rtc.c)
+        
+        endif(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED)
+    
+    endif(NRF5SDK__APP_TIMER_V2)
     
     if(NRF5SDK__FREERTOS)
     

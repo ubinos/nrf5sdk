@@ -9,14 +9,23 @@ set_cache_default(NRF5SDK__SYSTICK_ENABLED                                      
 set_cache_default(NRF5SDK__UART_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__FREERTOS                                             FALSE   BOOL "Include freertos component")
 set_cache_default(NRF5SDK__SWI_DISABLE0                                         FALSE   BOOL "Exclude SWI0 from being utilized by the driver")
+set_cache_default(NRF5SDK__APP_TIMER_V2                                         FALSE   BOOL "")
+set_cache_default(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED                            FALSE   BOOL "")
+set_cache_default(NRF5SDK__DEBUG                                                FALSE   BOOL "")
+set_cache_default(NRF5SDK__DEBUG_NRF                                            FALSE   BOOL "")
+
 
 ####
 set(_tmp_all_flags "")
 
 if(UBINOS__BSP__USE_DTTY)
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=1 -DNRF_LOG_BACKEND_DTTY_TEMP_BUFFER_SIZE=64")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=1 -DNRF_CLI_CMD_BUFF_SIZE=384 -DNRF_CLI_PRINTF_BUFF_SIZE=23 -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_UART_ENABLED=0")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_UART_ENABLED=0")
 else()
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=0")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=0")
 endif()
 
 if(NOT NRF5SDK__BOARD_NAME STREQUAL "")
@@ -48,6 +57,22 @@ endif()
 
 if(NRF5SDK__SWI_DISABLE0)
     set(_tmp_all_flags "${_tmp_all_flags} -DSWI_DISABLE0")
+endif()
+
+if(NRF5SDK__APP_TIMER_V2)
+    set(_tmp_all_flags "${_tmp_all_flags} -DAPP_TIMER_V2")
+endif()
+
+if(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED)
+    set(_tmp_all_flags "${_tmp_all_flags} -DAPP_TIMER_V2_RTC1_ENABLED")
+endif()
+
+if(NRF5SDK__DEBUG)
+    set(_tmp_all_flags "${_tmp_all_flags} -DDEBUG")
+endif()
+
+if(NRF5SDK__DEBUG_NRF)
+    set(_tmp_all_flags "${_tmp_all_flags} -DDEBUG_NRF")
 endif()
 
 if(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)
@@ -88,6 +113,11 @@ elseif(NRF5SDK__BOARD_CONFIG_NAME STREQUAL "UART")
 include_directories(${_tmp_source_dir}/nRF5_SDK/examples/peripheral/uart/${_temp_board_name}/blank/config)
 include_directories(${_tmp_source_dir}/nRF5_SDK/examples/peripheral/uart)
 
+elseif(NRF5SDK__BOARD_CONFIG_NAME STREQUAL "CLI")
+
+include_directories(${_tmp_source_dir}/nRF5_SDK/examples/peripheral/cli/${_temp_board_name}/blank/config)
+include_directories(${_tmp_source_dir}/nRF5_SDK/examples/peripheral/cli)
+
 elseif(NRF5SDK__BOARD_CONFIG_NAME STREQUAL "BSP")
 
 include_directories(${_tmp_source_dir}/nRF5_SDK/examples/peripheral/bsp/${_temp_board_name}/blank/config)
@@ -122,6 +152,11 @@ elseif(NRF5SDK__BOARD_CONFIG_NAME STREQUAL "BLE_APP_MULTILINK_CENTRAL")
 
 include_directories(${_tmp_source_dir}/nRF5_SDK/examples/ble_central/ble_app_multilink_central/${_temp_board_name}/s132/config)
 include_directories(${_tmp_source_dir}/nRF5_SDK/examples/ble_central/ble_app_multilink_central)
+
+elseif(NRF5SDK__BOARD_CONFIG_NAME STREQUAL "BLE_APP_ATT_MTU_THROUGHPUT")
+
+include_directories(${_tmp_source_dir}/nRF5_SDK/examples/ble_central_and_peripheral/experimental/ble_app_att_mtu_throughput/${_temp_board_name}/s132/config)
+include_directories(${_tmp_source_dir}/nRF5_SDK/examples/ble_central_and_peripheral/experimental/ble_app_att_mtu_throughput)
 
 else()
 

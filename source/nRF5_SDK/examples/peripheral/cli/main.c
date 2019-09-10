@@ -41,6 +41,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include <ubinos.h>
+
 #include "nrf.h"
 #include "nrf_drv_clock.h"
 #include "nrf_gpio.h"
@@ -81,14 +83,27 @@
 #include "app_usbd_cdc_acm.h"
 #endif //CLI_OVER_USB_CDC_ACM
 
+#if (UBINOS__BSP__USE_DTTY == 1)
+#define CLI_OVER_UART 0
+#if defined(TX_PIN_NUMBER) && defined(RX_PIN_NUMBER)
+#define CLI_OVER_DTTY 1
+#else
+#define CLI_OVER_DTTY 0
+#endif
+#else
 #if defined(TX_PIN_NUMBER) && defined(RX_PIN_NUMBER)
 #define CLI_OVER_UART 1
 #else
 #define CLI_OVER_UART 0
 #endif
+#endif
 
 #if CLI_OVER_UART
 #include "nrf_cli_uart.h"
+#endif
+
+#if CLI_OVER_DTTY
+#include "nrf_cli_dtty.h"
 #endif
 
 /* If enabled then CYCCNT (high resolution) timestamp is used for the logger. */
@@ -177,6 +192,15 @@ NRF_CLI_DEF(m_cli_uart,
             CLI_EXAMPLE_LOG_QUEUE_SIZE);
 #endif
 
+#if CLI_OVER_DTTY
+NRF_CLI_DTTY_DEF(m_cli_dtty_transport);
+NRF_CLI_DEF(m_cli_dtty,
+            "dtty_cli:~$ ",
+            &m_cli_dtty_transport.transport,
+            '\n',
+            CLI_EXAMPLE_LOG_QUEUE_SIZE);
+#endif
+
 NRF_CLI_RTT_DEF(m_cli_rtt_transport);
 NRF_CLI_DEF(m_cli_rtt,
             "rtt_cli:~$ ",
@@ -209,6 +233,11 @@ static void cli_start(void)
     APP_ERROR_CHECK(ret);
 #endif
 
+#if CLI_OVER_DTTY
+    ret = nrf_cli_start(&m_cli_dtty);
+    APP_ERROR_CHECK(ret);
+#endif
+
     ret = nrf_cli_start(&m_cli_rtt);
     APP_ERROR_CHECK(ret);
 }
@@ -228,6 +257,11 @@ static void cli_init(void)
     uart_config.pselrxd = RX_PIN_NUMBER;
     uart_config.hwfc    = NRF_UART_HWFC_DISABLED;
     ret = nrf_cli_init(&m_cli_uart, &uart_config, true, true, NRF_LOG_SEVERITY_INFO);
+    APP_ERROR_CHECK(ret);
+#endif
+
+#if CLI_OVER_DTTY
+    ret = nrf_cli_init(&m_cli_dtty, NULL, true, true, NRF_LOG_SEVERITY_INFO);
     APP_ERROR_CHECK(ret);
 #endif
 
@@ -279,6 +313,10 @@ static void cli_process(void)
 
 #if CLI_OVER_UART
     nrf_cli_process(&m_cli_uart);
+#endif
+
+#if CLI_OVER_DTTY
+    nrf_cli_process(&m_cli_dtty);
 #endif
 
     nrf_cli_process(&m_cli_rtt);

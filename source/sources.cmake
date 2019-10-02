@@ -178,7 +178,6 @@ if(INCLUDE__NRF5SDK)
     
     if(NRF5SDK__UART_ENABLED)
     
-        set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/uart/app_uart_fifo.c)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/uart/retarget.c)
         
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/integration/nrfx/legacy/nrf_drv_uart.c)
@@ -186,8 +185,13 @@ if(INCLUDE__NRF5SDK)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_uart.c)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/modules/nrfx/drivers/src/nrfx_uarte.c)
     
-    endif(NRF5SDK__UART_ENABLED)
+        if(NRF5SDK__ENABLE_APP_UART_FIFO)
+            set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/uart/app_uart_fifo.c)
+        else()
+            set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/uart/app_uart.c)
+        endif(NRF5SDK__ENABLE_APP_UART_FIFO)
     
+    endif(NRF5SDK__UART_ENABLED)
     
     if(NRF5SDK__APP_TIMER_V2)
     

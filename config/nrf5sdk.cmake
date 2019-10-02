@@ -1,10 +1,14 @@
 set(INCLUDE__NRF5SDK                                                            TRUE)
 
 set_cache_default(NRF5SDK__BOARD_NAME                                           "" STRING "[PCA10040]")
+
+set_cache_default(NRF5SDK__ENABLE_APP_UART_FIFO                                 TRUE    BOOL "")
+
 set_cache_default(NRF5SDK__BSP_DEFINES_ONLY                                     FALSE   BOOL "")
 set_cache_default(NRF5SDK__SYSTICK_ENABLED                                      FALSE   BOOL "")
 set_cache_default(NRF5SDK__UART_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__FREERTOS                                             FALSE   BOOL "Include freertos component")
+
 set_cache_default(NRF5SDK__SWI_DISABLE0                                         FALSE   BOOL "Exclude SWI0 from being utilized by the driver")
 set_cache_default(NRF5SDK__APP_TIMER_V2                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED                            FALSE   BOOL "")

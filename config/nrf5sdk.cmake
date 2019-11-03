@@ -1,6 +1,6 @@
 set(INCLUDE__NRF5SDK                                                            TRUE)
 
-set_cache_default(NRF5SDK__BOARD_NAME                                           "" STRING "[PCA10040]")
+set_cache_default(NRF5SDK__BOARD_NAME                                           "PCA10040" STRING "[PCA10040]")
 
 set_cache_default(NRF5SDK__ENABLE_APP_UART_FIFO                                 TRUE    BOOL "")
 
@@ -19,6 +19,12 @@ set_cache_default(NRF5SDK__DEBUG_NRF                                            
 ####
 set(_tmp_all_flags "")
 
+if(NOT NRF5SDK__BOARD_NAME STREQUAL "")
+    set(_tmp_all_flags "${_tmp_all_flags} -DBOARD_${NRF5SDK__BOARD_NAME}")
+else()
+    message(FATAL_ERROR "Unsupported NRF5SDK__BOARD_NAME")
+endif()
+
 if(UBINOS__BSP__USE_DTTY)
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=1 -DNRF_LOG_BACKEND_DTTY_TEMP_BUFFER_SIZE=64")
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=1 -DNRF_CLI_CMD_BUFF_SIZE=384 -DNRF_CLI_PRINTF_BUFF_SIZE=23 -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
@@ -27,21 +33,6 @@ if(UBINOS__BSP__USE_DTTY)
 else()
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=0")
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=0")
-endif()
-
-if(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)
-    if(NOT UBINOS__BSP__NRF52_SOFTDEVICE_NAME STREQUAL "")
-        string(TOLOWER ${UBINOS__BSP__NRF52_SOFTDEVICE_NAME} _temp_softdevice_name)
-    else()
-        message(FATAL_ERROR "Unsupported UBINOS__BSP__NRF52_SOFTDEVICE_NAME")
-    endif()
-endif()
-
-if(NOT NRF5SDK__BOARD_NAME STREQUAL "")
-    set(_tmp_all_flags "${_tmp_all_flags} -DBOARD_${NRF5SDK__BOARD_NAME}")
-    string(TOLOWER ${NRF5SDK__BOARD_NAME} _temp_board_name)
-else()
-    message(FATAL_ERROR "Unsupported NRF5SDK__BOARD_NAME")
 endif()
 
 if(NRF5SDK__BSP_DEFINES_ONLY)

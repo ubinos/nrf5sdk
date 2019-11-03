@@ -2,8 +2,6 @@ set_cache(UBINOS__BSP__LINK_MEMMAP_RAM_ORIGIN 0x20003400 STRING)
 set_cache(UBINOS__BSP__LINK_MEMMAP_RAM_LENGTH 0x0000CC00 STRING)
 set_cache(UBINOS__BSP__STACK_SIZE 0x00002000 STRING)
 
-set_cache(NRF5SDK__BOARD_NAME "PCA10040" STRING)
-
 include(${PROJECT_UBINOS_DIR}/config/ubinos_nrf52dk_softdevice_baremetal.cmake)
 
 include(${CMAKE_CURRENT_LIST_DIR}/nrf5sdk.cmake)

@@ -70,6 +70,7 @@
 
 #if defined(APP_USBD_ENABLED) && APP_USBD_ENABLED
 #define CLI_OVER_USB_CDC_ACM 1
+#define CLI_OVER_RTT 0
 #else
 #define CLI_OVER_USB_CDC_ACM 0
 #endif
@@ -83,18 +84,24 @@
 #include "app_usbd_cdc_acm.h"
 #endif //CLI_OVER_USB_CDC_ACM
 
+#if (CLI_OVER_USB_CDC_ACM == 0)
 #if (UBINOS__BSP__USE_DTTY == 1)
 #define CLI_OVER_UART 0
 #if defined(TX_PIN_NUMBER) && defined(RX_PIN_NUMBER)
 #define CLI_OVER_DTTY 1
+#define CLI_OVER_RTT 0
 #else
 #define CLI_OVER_DTTY 0
+#define CLI_OVER_RTT 1
 #endif
 #else
 #if defined(TX_PIN_NUMBER) && defined(RX_PIN_NUMBER)
 #define CLI_OVER_UART 1
+#define CLI_OVER_RTT 0
 #else
 #define CLI_OVER_UART 0
+#define CLI_OVER_RTT 1
+#endif
 #endif
 #endif
 
@@ -238,8 +245,10 @@ static void cli_start(void)
     APP_ERROR_CHECK(ret);
 #endif
 
+#if CLI_OVER_RTT
     ret = nrf_cli_start(&m_cli_rtt);
     APP_ERROR_CHECK(ret);
+#endif
 }
 
 static void cli_init(void)
@@ -265,8 +274,10 @@ static void cli_init(void)
     APP_ERROR_CHECK(ret);
 #endif
 
+#if CLI_OVER_RTT
     ret = nrf_cli_init(&m_cli_rtt, NULL, true, true, NRF_LOG_SEVERITY_INFO);
     APP_ERROR_CHECK(ret);
+#endif
 }
 
 
@@ -319,7 +330,9 @@ static void cli_process(void)
     nrf_cli_process(&m_cli_dtty);
 #endif
 
+#if CLI_OVER_RTT
     nrf_cli_process(&m_cli_rtt);
+#endif
 }
 
 

@@ -1,14 +1,25 @@
 set(INCLUDE__NRF5SDK                                                            TRUE)
 
-set_cache_default(NRF5SDK__BOARD_NAME                                           "PCA10040" STRING "[PCA10040]")
+if(UBINOS__BSP__BOARD_MODEL STREQUAL "NRF52DK")
+    set_cache(NRF5SDK__BOARD_NAME "PCA10040" STRING)
+elseif(UBINOS__BSP__BOARD_MODEL STREQUAL "NRF52840DK")
+    set_cache(NRF5SDK__BOARD_NAME "PCA10056" STRING)
+else()
+    message(FATAL_ERROR "Unsupported UBINOS__BSP__BOARD_MODEL")
+endif()
+
+set_cache_default(NRF5SDK__BOARD_NAME                                           "" STRING "[PCA10040 | PCA10056]")
 
 set_cache_default(NRF5SDK__ENABLE_APP_UART_FIFO                                 TRUE    BOOL "")
+
+set_cache_default(NRF5SDK__USE_ALT_TRACE_PIN                                    FALSE   BOOL "")
 
 set_cache_default(NRF5SDK__BSP_DEFINES_ONLY                                     FALSE   BOOL "")
 set_cache_default(NRF5SDK__SYSTICK_ENABLED                                      FALSE   BOOL "")
 set_cache_default(NRF5SDK__UART_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__FREERTOS                                             FALSE   BOOL "Include freertos component")
 set_cache_default(NRF5SDK__CRYPTO_ENABLED                                       FALSE   BOOL "")
+set_cache_default(NRF5SDK__USBD_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__IOT_ENABLED                                          FALSE   BOOL "")
 
 set_cache_default(NRF5SDK__SWI_DISABLE0                                         FALSE   BOOL "Exclude SWI0 from being utilized by the driver")
@@ -38,6 +49,10 @@ else()
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=0")
 endif()
 
+if(NRF5SDK__USE_ALT_TRACE_PIN)
+    set(_tmp_all_flags "${_tmp_all_flags} -DUSE_ALT_TRACE_PIN")
+endif()
+
 if(NRF5SDK__BSP_DEFINES_ONLY)
     set(_tmp_all_flags "${_tmp_all_flags} -DBSP_DEFINES_ONLY")
 endif()
@@ -52,6 +67,12 @@ if(NRF5SDK__UART_ENABLED)
     set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=1 -DNRF_LOG_BACKEND_UART_ENABLED=1")
 else()
     set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=0 -DNRF_LOG_BACKEND_UART_ENABLED=0")
+endif()
+
+if(NRF5SDK__USBD_ENABLED)
+    set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=1")
+else()
+    set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=0 -DAPP_USBD_ENABLED=0")
 endif()
 
 if(NRF5SDK__CRYPTO_ENABLED)
@@ -117,7 +138,7 @@ endif()
 
 if(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)
     set(_tmp_all_flags "${_tmp_all_flags} -D${UBINOS__BSP__NRF52_SOFTDEVICE_NAME} -DNRF_SD_BLE_API_VERSION=${UBINOS__BSP__NRF52_SOFTDEVICE_BLE_API_VERSION}")
-endif(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)
+endif()
 
 set(CMAKE_ASM_FLAGS "${_tmp_all_flags} ${CMAKE_ASM_FLAGS}")
 set(CMAKE_C_FLAGS   "${_tmp_all_flags} ${CMAKE_C_FLAGS}")

@@ -69,8 +69,13 @@ extern "C" {
 
 #define BUTTONS_NUMBER 4
 
+#if defined(USE_ALT_TRACE_PIN)
+#define BUTTON_1       (32 + 7)
+#define BUTTON_2       (32 + 8)
+#else
 #define BUTTON_1       11
 #define BUTTON_2       12
+#endif
 #define BUTTON_3       24
 #define BUTTON_4       25
 #define BUTTON_PULL    NRF_GPIO_PIN_PULLUP
@@ -86,7 +91,11 @@ extern "C" {
 
 #define RX_PIN_NUMBER  8
 #define TX_PIN_NUMBER  6
+#if defined(USE_ALT_TRACE_PIN)
+#define CTS_PIN_NUMBER 4
+#else
 #define CTS_PIN_NUMBER 7
+#endif
 #define RTS_PIN_NUMBER 5
 #define HWFC           true
 

@@ -37,7 +37,9 @@
 #define NO_SYS_NO_TIMERS            0
 #define MEM_LIBC_MALLOC             1
 #define MEMP_MEM_MALLOC             1
+#if !defined(UBINOS_BSP_PRESENT)
 #define MEM_ALIGNMENT               4
+#endif /* defined(UBINOS_BSP_PRESENT) */
 #define MEM_SIZE                    0
 #define PBUF_POOL_SIZE              32
 #define LWIP_ARP                    0

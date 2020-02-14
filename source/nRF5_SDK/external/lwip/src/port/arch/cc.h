@@ -57,6 +57,36 @@ typedef uintptr_t   mem_ptr_t;
 
 #define LWIP_ERR_T  int
 
+#if defined(LWIP_DEBUG_ENABLED) && LWIP_DEBUG_ENABLED
+
+#include "nrf_log.h"
+
+/* Define (sn)printf formatters for these lwIP types */
+#define U16_F "hu"
+#define S16_F "hd"
+#define X16_F "hx"
+#define U32_F "lu"
+#define S32_F "ld"
+#define X32_F "lx"
+
+/* Compiler hints for packing structures */
+//#define PACK_STRUCT_FIELD    __attribute__((packed))
+//#define PACK_STRUCT_FLD_8    __attribute__((packed))
+//#define PACK_STRUCT_STRUCT   __attribute__((packed))
+#define PACK_STRUCT_BEGIN __attribute__((packed))
+//#define PACK_STRUCT_END
+
+void nrf_message(const char * m);
+
+/* Plaform specific diagnostic output */
+#define LWIP_PLATFORM_DIAG(x) do {NRF_LOG_INFO x;} while(0)
+
+#define LWIP_PLATFORM_ASSERT(x) ASSERT(x)
+
+#define LWIP_RAND()  ((u32_t)rand())
+
+#else
+
 /* Define (sn)printf formatters for these lwIP types */
 #define U16_F "hu"
 #define S16_F "hd"
@@ -80,6 +110,8 @@ void nrf_message(const char * m);
 #define LWIP_PLATFORM_ASSERT(x) ASSERT(x)
 
 #define LWIP_RAND()  ((u32_t)rand())
+
+#endif /* defined(LWIP_DEBUG_ENABLED) && LWIP_DEBUG_ENABLED */
 
 #endif /* __ARCH_CC_H__ */
 

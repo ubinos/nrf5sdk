@@ -158,6 +158,12 @@
 #define LOG_INTERNAL_6(type, str, arg0, arg1, arg2, arg3, arg4, arg5) \
     /*lint -save -e571*/nrf_log_frontend_std_6(type, str, (uint32_t)(arg0), \
             (uint32_t)(arg1), (uint32_t)(arg2), (uint32_t)(arg3), (uint32_t)(arg4), (uint32_t)(arg5))/*lint -restore*/
+#define LOG_INTERNAL_7(type, str, arg0, arg1, arg2, arg3, arg4, arg5, arg6) \
+    /*lint -save -e571*/nrf_log_frontend_std_7(type, str, (uint32_t)(arg0), \
+            (uint32_t)(arg1), (uint32_t)(arg2), (uint32_t)(arg3), (uint32_t)(arg4), (uint32_t)(arg5), (uint32_t)(arg6))/*lint -restore*/
+#define LOG_INTERNAL_8(type, str, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7) \
+    /*lint -save -e571*/nrf_log_frontend_std_8(type, str, (uint32_t)(arg0), \
+            (uint32_t)(arg1), (uint32_t)(arg2), (uint32_t)(arg3), (uint32_t)(arg4), (uint32_t)(arg5), (uint32_t)(arg6), (uint32_t)(arg7))/*lint -restore*/
 
 
 #else //NRF_LOG_ENABLED
@@ -176,6 +182,10 @@
                (void)(_type); (void)(_str); (void)(_arg0); (void)(_arg1); (void)(_arg2); (void)(_arg3); (void)(_arg4)
 #define LOG_INTERNAL_6(_type, _str, _arg0, _arg1, _arg2, _arg3, _arg4, _arg5) \
                (void)(_type); (void)(_str); (void)(_arg0); (void)(_arg1); (void)(_arg2); (void)(_arg3); (void)(_arg4); (void)(_arg5)
+#define LOG_INTERNAL_7(_type, _str, _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6) \
+               (void)(_type); (void)(_str); (void)(_arg0); (void)(_arg1); (void)(_arg2); (void)(_arg3); (void)(_arg4); (void)(_arg5); (void)(_arg6)
+#define LOG_INTERNAL_8(_type, _str, _arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7) \
+               (void)(_type); (void)(_str); (void)(_arg0); (void)(_arg1); (void)(_arg2); (void)(_arg3); (void)(_arg4); (void)(_arg5); (void)(_arg6); (void)(_arg7)
 #endif //NRF_LOG_ENABLED
 
 #define LOG_SEVERITY_MOD_ID(severity) ((severity) | NRF_LOG_MODULE_ID << NRF_LOG_MODULE_ID_POS)
@@ -493,6 +503,41 @@ void nrf_log_frontend_std_6(uint32_t           severity_mid,
                             uint32_t           val3,
                             uint32_t           val4,
                             uint32_t           val5);
+
+/**
+ * @brief A function for logging a formatted string with 7 arguments.
+ *
+ * @param severity_mid                       Severity.
+ * @param p_str                              A pointer to a formatted string.
+ * @param val0, val1, val2, val3, val4, val5, val6 Arguments for formatting string.
+ */
+void nrf_log_frontend_std_7(uint32_t           severity_mid,
+                            char const * const p_str,
+                            uint32_t           val0,
+                            uint32_t           val1,
+                            uint32_t           val2,
+                            uint32_t           val3,
+                            uint32_t           val4,
+                            uint32_t           val5,
+							uint32_t           val6);
+
+/**
+ * @brief A function for logging a formatted string with 8 arguments.
+ *
+ * @param severity_mid                       Severity.
+ * @param p_str                              A pointer to a formatted string.
+ * @param val0, val1, val2, val3, val4, val5, val6, val7 Arguments for formatting string.
+ */
+void nrf_log_frontend_std_8(uint32_t           severity_mid,
+                            char const * const p_str,
+                            uint32_t           val0,
+                            uint32_t           val1,
+                            uint32_t           val2,
+                            uint32_t           val3,
+                            uint32_t           val4,
+                            uint32_t           val5,
+                            uint32_t           val6,
+							uint32_t           val7);
 
 /**
  * @brief A function for logging raw data.

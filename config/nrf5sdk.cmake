@@ -22,6 +22,7 @@ set_cache_default(NRF5SDK__CRYPTO_ENABLED                                       
 set_cache_default(NRF5SDK__USBD_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__IOT_ENABLED                                          FALSE   BOOL "")
 set_cache_default(NRF5SDK__LWIP_ENABLED                                         FALSE   BOOL "")
+set_cache_default(NRF5SDK__LWIP_DEBUG_ENABLED                                   FALSE   BOOL "")
 
 set_cache_default(NRF5SDK__SWI_DISABLE0                                         FALSE   BOOL "Exclude SWI0 from being utilized by the driver")
 set_cache_default(NRF5SDK__APP_TIMER_V2                                         FALSE   BOOL "")
@@ -74,6 +75,10 @@ if(NRF5SDK__USBD_ENABLED)
     set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=1")
 else()
     set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=0 -DAPP_USBD_ENABLED=0")
+endif()
+
+if(NRF5SDK__LWIP_ENABLED AND NRF5SDK__LWIP_DEBUG_ENABLED)
+    set(_tmp_all_flags "${_tmp_all_flags} -DLWIP_DEBUG_ENABLED=1")
 endif()
 
 if(NRF5SDK__CRYPTO_ENABLED)

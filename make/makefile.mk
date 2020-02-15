@@ -1,8 +1,6 @@
-LIBRARY_DIR        ?= ../..
+LIBRARY_DIR ?= ../..
 
-help: common-help
+include $(LIBRARY_DIR)/ubinos/make/common.mk
+-include $(LIBRARY_DIR)/ubinos/make/custom.mk
 
 %: common-% ;
-
--include $(LIBRARY_DIR)/ubinos/make/custom.mk
-include $(LIBRARY_DIR)/ubinos/make/common.mk

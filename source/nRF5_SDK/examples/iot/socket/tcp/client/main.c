@@ -56,13 +56,17 @@
 
 #define TCP_DATA_SIZE                 8
 
+#if !defined(IOT_SOCKET_TCP_CLIENT_DEST_IPV6)
+	#define IOT_SOCKET_TCP_CLIENT_DEST_IPV6 "2001:db8::1"
+#endif
+
 int main(void)
 {
     struct sockaddr_in6 dest;
     memset(&dest, 0, sizeof(dest));
     dest.sin6_family = AF_INET6;
     // Change this address to that of your server
-    (void)inet_pton(AF_INET6, "2001:db8::1", &dest.sin6_addr);
+    (void)inet_pton(AF_INET6, IOT_SOCKET_TCP_CLIENT_DEST_IPV6, &dest.sin6_addr);
     dest.sin6_port = htons(9000);
 
     int ret = -1;
@@ -116,7 +120,7 @@ int main(void)
         }
         else
         {
-            printf("Data Tx, Sequence number 0x%08x\r\n", seq_number);
+            printf("Data Tx, Sequence number 0x%08lx\r\n", seq_number);
         }
 
         (void) sleep(1);

@@ -99,7 +99,9 @@ extern "C" {
  *          be received while an SDU is being consumed by the application
  *          (6LoWPAN/IP Stack).
  */
+#if !defined(BLE_IPSP_RX_BUFFER_COUNT)
 #define BLE_IPSP_RX_BUFFER_COUNT                           4
+#endif
 
 /**@brief L2CAP Protocol Service Multiplexers number. */
 #define BLE_IPSP_PSM                                       0x0023

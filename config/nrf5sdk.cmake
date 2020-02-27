@@ -1,4 +1,4 @@
-set(INCLUDE__NRF5SDK                                                            TRUE)
+set(INCLUDE__NRF5SDK TRUE)
 
 if(UBINOS__BSP__BOARD_MODEL STREQUAL "NRF52DK")
     set_cache(NRF5SDK__BOARD_NAME "PCA10040" STRING)
@@ -30,6 +30,19 @@ set_cache_default(NRF5SDK__APP_TIMER_V2_RTC1_ENABLED                            
 set_cache_default(NRF5SDK__DEBUG                                                FALSE   BOOL "")
 set_cache_default(NRF5SDK__DEBUG_NRF                                            FALSE   BOOL "")
 set_cache_default(NRF5SDK__BLE_STACK_SUPPORT_REQD                               FALSE   BOOL "")
+
+set_cache_default(NRF5SDK__LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS                FALSE   BOOL "")
+set_cache_default(NRF5SDK__SDK_MUTEX_ENABLE                                     FALSE   BOOL "")
+
+
+if(NRF5SDK__IOT_ENABLED)
+
+set_cache_default(NRF5SDK__BLE_IPSP_RX_BUFFER_COUNT 2 STRING "")
+
+set_cache_default(NRF5SDK__IOT_TIMER_ENABLED TRUE BOOL "")
+set_cache_default(NRF5SDK__IOT_SOCKET_ENABLED FALSE BOOL "")
+
+endif()
 
 
 ####
@@ -75,6 +88,10 @@ if(NRF5SDK__USBD_ENABLED)
     set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=1")
 else()
     set(_tmp_all_flags "${_tmp_all_flags} -DUSBD_ENABLED=0 -DAPP_USBD_ENABLED=0")
+endif()
+
+if(NRF5SDK__IOT_ENABLED)
+    set(_tmp_all_flags "${_tmp_all_flags} -DBLE_IPSP_RX_BUFFER_COUNT=${NRF5SDK__BLE_IPSP_RX_BUFFER_COUNT}")
 endif()
 
 if(NRF5SDK__LWIP_ENABLED AND NRF5SDK__LWIP_DEBUG_ENABLED)
@@ -140,6 +157,14 @@ endif()
 
 if(NRF5SDK__BLE_STACK_SUPPORT_REQD)
     set(_tmp_all_flags "${_tmp_all_flags} -DBLE_STACK_SUPPORT_REQD")
+endif()
+
+if(NRF5SDK__LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS)
+    set(_tmp_all_flags "${_tmp_all_flags} -DLWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS")
+endif()
+
+if(NRF5SDK__SDK_MUTEX_ENABLE)
+    set(_tmp_all_flags "${_tmp_all_flags} -DSDK_MUTEX_ENABLE")
 endif()
 
 if(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)

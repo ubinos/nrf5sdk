@@ -76,13 +76,26 @@
 /** Remote TCP Port Address on which data is transmitted.
  *  Modify m_remote_addr according to your setup.
  *  The address provided below is a place holder.  */
+#if !defined(IOT_TCP_CLIENT_DEST_IPV6_0)
+	#define IOT_TCP_CLIENT_DEST_IPV6_0 0x20010DB8
+#endif
+#if !defined(IOT_TCP_CLIENT_DEST_IPV6_1)
+	#define IOT_TCP_CLIENT_DEST_IPV6_1 0x00000000
+#endif
+#if !defined(IOT_TCP_CLIENT_DEST_IPV6_2)
+	#define IOT_TCP_CLIENT_DEST_IPV6_2 0x00000000
+#endif
+#if !defined(IOT_TCP_CLIENT_DEST_IPV6_3)
+	#define IOT_TCP_CLIENT_DEST_IPV6_3 0x00000001
+#endif
+
 static const ip6_addr_t                     m_remote_addr =
 {
     .addr =
-    {HTONL(0x20010DB8),
-    0x00000000,
-    0x00000000,
-    HTONL(0x00000001)}
+    {HTONL(IOT_TCP_CLIENT_DEST_IPV6_0),
+     HTONL(IOT_TCP_CLIENT_DEST_IPV6_1),
+     HTONL(IOT_TCP_CLIENT_DEST_IPV6_2),
+     HTONL(IOT_TCP_CLIENT_DEST_IPV6_3)}
 };
 
 #define LED_ONE                             BSP_LED_0_MASK                                          /**< Is on when device is advertising. */

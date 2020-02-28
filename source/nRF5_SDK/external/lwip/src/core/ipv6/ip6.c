@@ -272,6 +272,33 @@ ip6_select_source_address(struct netif *netif, const ip6_addr_t *dest)
     }
   }
 
+  /* If the right address is not found, use the address in the following order: */
+  /*     global, unique-local, site-local, link-local */
+  for (i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i++) {
+    if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
+        ip6_addr_isglobal(netif_ip6_addr(netif, i))) {
+      return netif_ip_addr6(netif, i);
+    }
+  }
+  for (i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i++) {
+    if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
+        ip6_addr_isuniquelocal(netif_ip6_addr(netif, i))) {
+      return netif_ip_addr6(netif, i);
+    }
+  }
+  for (i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i++) {
+    if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
+        ip6_addr_issitelocal(netif_ip6_addr(netif, i))) {
+      return netif_ip_addr6(netif, i);
+    }
+  }
+  for (i = 0; i < LWIP_IPV6_NUM_ADDRESSES; i++) {
+    if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)) &&
+        ip6_addr_islinklocal(netif_ip6_addr(netif, i))) {
+      return netif_ip_addr6(netif, i);
+    }
+  }
+
   return NULL;
 }
 

@@ -151,7 +151,7 @@
 
 #if (APP_ENABLE_LOGS == 1)
 
-#define APPL_LOG  NRF_LOG_INFO
+#define APPL_LOG  NRF_LOG_RAW_INFO
 #define APPL_DUMP NRF_LOG_RAW_HEXDUMP_INFO
 #define APPL_ADDR IPV6_ADDRESS_LOG
 
@@ -353,7 +353,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
 #ifdef COMMISSIONING_ENABLED
         if ((button_action == APP_BUTTON_PUSH) && (pin_no == PING_PEER_BUTTON_PIN_NO))
         {
-            APPL_LOG("Erasing all commissioning settings from persistent storage...");
+            APPL_LOG("Erasing all commissioning settings from persistent storage...\r\n");
             commissioning_settings_clear();
             return;
         }
@@ -372,7 +372,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
         {
             case NS_BUTTON_PIN_NO:
             {
-                APPL_LOG("Sending Neighbour Solicitation to peer!");
+                APPL_LOG("Sending Neighbour Solicitation to peer!\r\n");
 
                 ns_param.add_aro      = true;
                 ns_param.aro_lifetime = 1000;
@@ -391,7 +391,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
             }
             case RS_BUTTON_PIN_NO:
             {
-                APPL_LOG("Sending Router Solicitation to all routers FF02::2!");
+                APPL_LOG("Sending Router Solicitation to all routers FF02::2!\r\n");
 
                 // Send Router Solicitation to all routers.
                 err_code = icmp6_rs_send(mp_interface,
@@ -402,7 +402,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
             }
             case PING_ALL_BUTTON_PIN_NO:
             {
-                APPL_LOG("Ping all remote nodes using FF02::1 address!");
+                APPL_LOG("Ping all remote nodes using FF02::1 address!\r\n");
 
                 pbuff_param.flags  = PBUFFER_FLAG_DEFAULT;
                 pbuff_param.type   = ICMP6_PACKET_TYPE;
@@ -422,7 +422,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
             }
             case PING_PEER_BUTTON_PIN_NO:
             {
-                APPL_LOG("Ping peer device!");
+                APPL_LOG("Ping peer device!\r\n");
 
                 pbuff_param.flags  = PBUFFER_FLAG_DEFAULT;
                 pbuff_param.type   = ICMP6_PACKET_TYPE;
@@ -564,7 +564,7 @@ uint32_t icmp6_handler(iot_interface_t  * p_interface,
                        uint32_t           process_result,
                        iot_pbuffer_t    * p_rx_packet)
 {
-    APPL_LOG("Got ICMP6 Application Handler Event on interface %p", p_interface);
+    APPL_LOG("Got ICMP6 Application Handler Event on interface %p\r\n", p_interface);
 
     APP_ERROR_CHECK(process_result);
 
@@ -577,22 +577,22 @@ uint32_t icmp6_handler(iot_interface_t  * p_interface,
     switch (p_icmp_header->type)
     {
         case ICMP6_TYPE_DESTINATION_UNREACHABLE:
-            APPL_LOG("ICMP6 Message Type = Destination Unreachable Error");
+            APPL_LOG("ICMP6 Message Type = Destination Unreachable Error\r\n");
             break;
         case ICMP6_TYPE_PACKET_TOO_LONG:
-            APPL_LOG("ICMP6 Message Type = Packet Too Long Error");
+            APPL_LOG("ICMP6 Message Type = Packet Too Long Error\r\n");
             break;
         case ICMP6_TYPE_TIME_EXCEED:
-            APPL_LOG("ICMP6 Message Type = Time Exceed Error");
+            APPL_LOG("ICMP6 Message Type = Time Exceed Error\r\n");
             break;
         case ICMP6_TYPE_PARAMETER_PROBLEM:
-            APPL_LOG("ICMP6 Message Type = Parameter Problem Error");
+            APPL_LOG("ICMP6 Message Type = Parameter Problem Error\r\n");
             break;
         case ICMP6_TYPE_ECHO_REQUEST:
-            APPL_LOG("ICMP6 Message Type = Echo Request");
+            APPL_LOG("ICMP6 Message Type = Echo Request\r\n");
             break;
         case ICMP6_TYPE_ECHO_REPLY:
-            APPL_LOG("ICMP6 Message Type = Echo Reply");
+            APPL_LOG("ICMP6 Message Type = Echo Reply\r\n");
 
             if (m_led_feedback_enabled == true)
             {
@@ -602,10 +602,10 @@ uint32_t icmp6_handler(iot_interface_t  * p_interface,
 
             break;
         case ICMP6_TYPE_ROUTER_SOLICITATION:
-            APPL_LOG("ICMP6 Message Type = Router Solicitation");
+            APPL_LOG("ICMP6 Message Type = Router Solicitation\r\n");
             break;
         case ICMP6_TYPE_ROUTER_ADVERTISEMENT:
-            APPL_LOG("ICMP6 Message Type = Router Advertisement");
+            APPL_LOG("ICMP6 Message Type = Router Advertisement\r\n");
 
             if (m_led_feedback_enabled == true)
             {
@@ -615,10 +615,10 @@ uint32_t icmp6_handler(iot_interface_t  * p_interface,
 
             break;
         case ICMP6_TYPE_NEIGHBOR_SOLICITATION:
-            APPL_LOG("ICMP6 Message Type = Neighbor Solicitation");
+            APPL_LOG("ICMP6 Message Type = Neighbor Solicitation\r\n");
             break;
         case ICMP6_TYPE_NEIGHBOR_ADVERTISEMENT:
-            APPL_LOG("ICMP6 Message Type = Neighbor Advertisement");
+            APPL_LOG("ICMP6 Message Type = Neighbor Advertisement\r\n");
 
             if (m_led_feedback_enabled == true)
             {
@@ -642,7 +642,7 @@ static void connectable_mode_enter(void)
     uint32_t err_code = ipv6_medium_connectable_mode_enter(m_ipv6_medium.ipv6_medium_instance_id);
     APP_ERROR_CHECK(err_code);
 
-    APPL_LOG("Physical layer in connectable mode.");
+    APPL_LOG("Physical layer in connectable mode.\r\n");
     m_disp_state = LEDS_CONNECTABLE_MODE;
 }
 
@@ -650,7 +650,7 @@ static void connectable_mode_enter(void)
 /**@brief IP Stack interface events handler. */
 void ip_app_handler(iot_interface_t * p_interface, ipv6_event_t * p_event)
 {
-    APPL_LOG("Got IP Application Handler Event on interface %p", p_interface);
+    APPL_LOG("Got IP Application Handler Event on interface %p\r\n", p_interface);
 
     switch (p_event->event_id)
     {
@@ -658,7 +658,7 @@ void ip_app_handler(iot_interface_t * p_interface, ipv6_event_t * p_event)
 #ifdef COMMISSIONING_ENABLED
             commissioning_joining_mode_timer_ctrl(JOINING_MODE_TIMER_STOP_RESET);
 #endif // COMMISSIONING_ENABLED
-            APPL_LOG("New interface added!");
+            APPL_LOG("New interface added!\r\n");
             mp_interface = p_interface;
 
             m_disp_state = LEDS_IPV6_IF_UP;
@@ -668,7 +668,7 @@ void ip_app_handler(iot_interface_t * p_interface, ipv6_event_t * p_event)
 #ifdef COMMISSIONING_ENABLED
             commissioning_joining_mode_timer_ctrl(JOINING_MODE_TIMER_START);
 #endif // COMMISSIONING_ENABLED
-            APPL_LOG("Interface removed!");
+            APPL_LOG("Interface removed!\r\n");
             mp_interface = NULL;
 
             m_led_feedback_enabled = false;
@@ -676,7 +676,7 @@ void ip_app_handler(iot_interface_t * p_interface, ipv6_event_t * p_event)
 
             break;
         case IPV6_EVT_INTERFACE_RX_DATA:
-            APPL_LOG("Got unsupported protocol data!");
+            APPL_LOG("Got unsupported protocol data!\r\n");
             break;
 
         default:
@@ -716,13 +716,13 @@ static void on_ipv6_medium_evt(ipv6_medium_evt_t * p_ipv6_medium_evt)
     {
         case IPV6_MEDIUM_EVT_CONN_UP:
         {
-            APPL_LOG("Physical layer connected.");
+            APPL_LOG("Physical layer connected.\r\n");
             m_disp_state = LEDS_IPV6_IF_DOWN;
             break;
         }
         case IPV6_MEDIUM_EVT_CONN_DOWN:
         {
-            APPL_LOG("Physical layer disconnected.");
+            APPL_LOG("Physical layer disconnected.\r\n");
             connectable_mode_enter();
             break;
         }
@@ -772,7 +772,7 @@ void commissioning_power_off_cb(bool power_off_on_failure)
 {
     m_power_off_on_failure = power_off_on_failure;
 
-    APPL_LOG("Do power_off on failure: %s.",
+    APPL_LOG("Do power_off on failure: %s.\r\n",
              m_power_off_on_failure ? "true" : "false");
 }
 #endif // COMMISSIONING_ENABLED
@@ -819,7 +819,7 @@ int main(void)
 
     // Initialize IP Stack.
     ip_stack_init();
-    APPL_LOG("Application started.");
+    APPL_LOG("Application started.\r\n");
 
     // Start execution.
     connectable_mode_enter();

@@ -133,7 +133,7 @@
 #define PBUF_DEBUG                  LWIP_DBG_OFF
 #define API_LIB_DEBUG               LWIP_DBG_OFF
 #define API_MSG_DEBUG               LWIP_DBG_OFF
-#define SOCKETS_DEBUG               LWIP_DBG_OFF
+#define SOCKETS_DEBUG               LWIP_DBG_ON
 #define ICMP_DEBUG                  LWIP_DBG_OFF
 #define INET_DEBUG                  LWIP_DBG_OFF
 #define IP_DEBUG                    LWIP_DBG_OFF
@@ -143,8 +143,8 @@
 #define MEMP_DEBUG                  LWIP_DBG_OFF
 #define SYS_DEBUG                   LWIP_DBG_OFF
 #define TCP_DEBUG                   LWIP_DBG_OFF
-#define TCP_INPUT_DEBUG             LWIP_DBG_OFF
-#define TCP_OUTPUT_DEBUG            LWIP_DBG_OFF
+#define TCP_INPUT_DEBUG             LWIP_DBG_ON
+#define TCP_OUTPUT_DEBUG            LWIP_DBG_ON
 #define TCP_RTO_DEBUG               LWIP_DBG_OFF
 #define TCP_CWND_DEBUG              LWIP_DBG_OFF
 #define TCP_WND_DEBUG               LWIP_DBG_OFF

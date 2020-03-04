@@ -69,9 +69,9 @@ extern "C" {
 
 #include "nrf_log.h"
 
-#define SOCKET_TRACE   NRF_LOG_DEBUG                 /**< Used for getting trace of execution in the module. */
-#define SOCKET_ERR     NRF_LOG_ERROR                 /**< Used for logging errors in the module. */
-#define SOCKET_DUMP    NRF_LOG_HEXDUMP_DEBUG         /**< Used for dumping octet information to get details of bond information etc. */
+#define SOCKET_TRACE   NRF_LOG_RAW_INFO                 /**< Used for getting trace of execution in the module. */
+#define SOCKET_ERR     NRF_LOG_RAW_INFO                 /**< Used for logging errors in the module. */
+#define SOCKET_DUMP    NRF_LOG_RAW_HEXDUMP_INFO         /**< Used for dumping octet information to get details of bond information etc. */
 
 #else
 

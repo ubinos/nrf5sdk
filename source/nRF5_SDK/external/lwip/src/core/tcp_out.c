@@ -1049,6 +1049,9 @@ tcp_output(struct tcp_pcb *pcb)
   }
 
 #if TCP_OUTPUT_DEBUG
+  LWIP_DEBUGF(TCP_OUTPUT_DEBUG, ("tcp_output: local address:  %s\n", ip6addr_ntoa(&pcb->local_ip)));
+  LWIP_DEBUGF(TCP_OUTPUT_DEBUG, ("tcp_output: remote address: %s\n", ip6addr_ntoa(&pcb->remote_ip)));
+
   if (seg == NULL) {
     LWIP_DEBUGF(TCP_OUTPUT_DEBUG, ("tcp_output: nothing to send (%p)\n",
                                    (void*)pcb->unsent));
@@ -1104,11 +1107,13 @@ tcp_output(struct tcp_pcb *pcb)
       break;
     }
 #if TCP_CWND_DEBUG
+/*
     LWIP_DEBUGF(TCP_CWND_DEBUG, ("tcp_output: snd_wnd %"TCPWNDSIZE_F", cwnd %"TCPWNDSIZE_F", wnd %"U32_F", effwnd %"U32_F", seq %"U32_F", ack %"U32_F", i %"S16_F"\n",
                             pcb->snd_wnd, pcb->cwnd, wnd,
                             lwip_ntohl(seg->tcphdr->seqno) + seg->len -
                             pcb->lastack,
                             lwip_ntohl(seg->tcphdr->seqno), pcb->lastack, i));
+*/
     ++i;
 #endif /* TCP_CWND_DEBUG */
 

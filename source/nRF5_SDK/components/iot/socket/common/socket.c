@@ -189,7 +189,7 @@ uint32_t socket_init(void)
     config_socket_start();
     m_initialization_state = true;
 
-    SOCKET_TRACE("Socket init complete");
+    SOCKET_TRACE("Socket init complete\r\n");
 
     return NRF_SUCCESS;
 }
@@ -204,7 +204,7 @@ static int socket_allocate(socket_t ** pp_socket)
     SOCKET_MUTEX_LOCK();
     for (int sock = 0; sock < NUM_SOCKETS; sock++)
     {
-        SOCKET_TRACE("Looking at socket %d with state %d", (int)sock, m_socket_table[sock].so_state);
+        SOCKET_TRACE("Looking at socket %d with state %d\r\n", (int)sock, m_socket_table[sock].so_state);
         if (m_socket_table[sock].so_state == STATE_CLOSED)
         {
             m_socket_table[sock].so_state = STATE_OPEN;
@@ -231,7 +231,7 @@ static socket_t * socket_find(int sock)
 
 static void socket_free(int sock)
 {
-    SOCKET_TRACE("Freeing socket %d", (int)sock);
+    SOCKET_TRACE("Freeing socket %d\r\n", (int)sock);
     SOCKET_MUTEX_LOCK();
     memset(&m_socket_table[sock], 0, sizeof(m_socket_table[sock]));
     m_socket_table[sock].so_state = STATE_CLOSED;
@@ -329,7 +329,7 @@ int socket(socket_family_t family, socket_type_t type, socket_protocol_t protoco
     int        ret_sock = -1;
     socket_t * p_socket = NULL;
     int        sock     = socket_allocate(&p_socket);
-    SOCKET_TRACE("Got value %d from allocate", (int)sock);
+    SOCKET_TRACE("Got value %d from allocate\r\n", (int)sock);
     if (sock >= 0)
     {
         p_socket->so_params.so_family   = family;
@@ -366,13 +366,13 @@ int socket(socket_family_t family, socket_type_t type, socket_protocol_t protoco
             socket_free(sock);
         }
     }
-    SOCKET_TRACE("Returning socket value %d", (int)ret_sock);
+    SOCKET_TRACE("Returning socket value %d\r\n", (int)ret_sock);
     return ret_sock;
 }
 
 static uint32_t wait_interface_up(void)
 {
-    SOCKET_TRACE("Waiting for interface to come up");
+    SOCKET_TRACE("Waiting for interface to come up\r\n");
     uint32_t err_code = NRF_SUCCESS;
     while (err_code == NRF_SUCCESS && m_interface_up == false)
     {
@@ -380,7 +380,7 @@ static uint32_t wait_interface_up(void)
     }
     if (m_interface_up == true)
     {
-        SOCKET_TRACE("Interface is up!");
+        SOCKET_TRACE("Interface is up!\r\n");
     }
     return err_code;
 }
@@ -644,7 +644,7 @@ int close(int sock)
     {
         uint32_t err_code = p_socket->so_transport->close(p_socket);
         ret = (err_code == NRF_SUCCESS) ? 0 : -1;
-        SOCKET_TRACE("Close socket %d: ret: %d", (int)sock, ret);
+        SOCKET_TRACE("Close socket %d: ret: %d\r\n", (int)sock, ret);
         socket_free(sock);
     }
     return ret;

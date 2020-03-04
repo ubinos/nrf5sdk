@@ -79,7 +79,7 @@ typedef uintptr_t   mem_ptr_t;
 void nrf_message(const char * m);
 
 /* Plaform specific diagnostic output */
-#define LWIP_PLATFORM_DIAG(x) do {NRF_LOG_INFO x;} while(0)
+#define LWIP_PLATFORM_DIAG(x) do {NRF_LOG_RAW_INFO x;} while(0)
 
 #define LWIP_PLATFORM_ASSERT(x) ASSERT(x)
 

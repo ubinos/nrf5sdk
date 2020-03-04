@@ -50,14 +50,6 @@
 #include "mqtt_internal.h"
 #include "mqtt_rx.h"
 
-#include "lwip/opt.h"
-#include "lwip/stats.h"
-#include "lwip/sys.h"
-#include "lwip/pbuf.h"
-/*lint -save -e607 */
-#include "lwip/tcp.h"
-/*lint -restore -e607 */
-
 #if MQTT_CONFIG_LOG_ENABLED
 
 #define NRF_LOG_MODULE_NAME mqtt_lwip
@@ -86,6 +78,14 @@ NRF_LOG_MODULE_REGISTER();
 #define MQTT_EXIT(...)
 
 #endif // MQTT_CONFIG_LOG_ENABLED
+
+#include "lwip/opt.h"
+#include "lwip/stats.h"
+#include "lwip/sys.h"
+#include "lwip/pbuf.h"
+/*lint -save -e607 */
+#include "lwip/tcp.h"
+/*lint -restore -e607 */
 
 void disconnect_event_notify(mqtt_client_t * p_client, uint32_t result);
 

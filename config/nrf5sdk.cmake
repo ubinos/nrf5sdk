@@ -19,10 +19,12 @@ set_cache_default(NRF5SDK__SYSTICK_ENABLED                                      
 set_cache_default(NRF5SDK__UART_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__FREERTOS                                             FALSE   BOOL "Include freertos component")
 set_cache_default(NRF5SDK__CRYPTO_ENABLED                                       FALSE   BOOL "")
+set_cache_default(NRF5SDK__CRYPTO_MBEDTLS_ENABLED                               FALSE   BOOL "")
 set_cache_default(NRF5SDK__USBD_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__IOT_ENABLED                                          FALSE   BOOL "")
 set_cache_default(NRF5SDK__LWIP_ENABLED                                         FALSE   BOOL "")
 set_cache_default(NRF5SDK__LWIP_DEBUG_ENABLED                                   FALSE   BOOL "")
+set_cache_default(NRF5SDK__MQTT_ENABLED                                         FALSE   BOOL "")
 
 set_cache_default(NRF5SDK__SWI_DISABLE0                                         FALSE   BOOL "Exclude SWI0 from being utilized by the driver")
 set_cache_default(NRF5SDK__APP_TIMER_V2                                         FALSE   BOOL "")
@@ -100,6 +102,17 @@ endif()
 
 if(NRF5SDK__CRYPTO_ENABLED)
 
+    if(NRF5SDK__CRYPTO_MBEDTLS_ENABLED)
+
+set_cache_default(NRF5SDK__MBEDTLS_CONFIG_DIR "${CMAKE_CURRENT_LIST_DIR}/../source/nRF5_SDK/external/nrf_tls/mbedtls/tls/config" STRING "")
+set_cache_default(NRF5SDK__MBEDTLS_CONFIG_FILE "\\\\\"nrf_tls_config.h\\\\\"" STRING "")
+
+set_cache_default(NRF5SDK__NRF_TLS_MAX_INSTANCE_COUNT 1 STRING "")
+
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_TLS_MAX_INSTANCE_COUNT=${NRF5SDK__NRF_TLS_MAX_INSTANCE_COUNT}")
+
+    else()
+    
 set_cache_default(NRF5SDK__MBEDTLS_CONFIG_DIR "${CMAKE_CURRENT_LIST_DIR}/../source/nRF5_SDK/external/nrf_tls/mbedtls/nrf_crypto/config" STRING "")
 set_cache_default(NRF5SDK__MBEDTLS_CONFIG_FILE "\\\\\"nrf_crypto_mbedtls_config.h\\\\\"" STRING "")
 
@@ -108,22 +121,24 @@ set_cache_default(NRF5SDK__NRF_CRYPTO_MAX_INSTANCE_COUNT 1 STRING "")
 set_cache_default(NRF5SDK__LIB_FILE_CC310 "${CMAKE_CURRENT_LIST_DIR}/../source/nRF5_SDK/external/nrf_cc310/lib/cortex-m4/hard-float/libnrf_cc310_0.9.12.a" STRING "")
 set_cache_default(NRF5SDK__LIB_FILE_OBERON "${CMAKE_CURRENT_LIST_DIR}/../source/nRF5_SDK/external/nrf_oberon/lib/cortex-m4/hard-float/liboberon_2.0.7.a" STRING "")
 
-    include_directories(${NRF5SDK__MBEDTLS_CONFIG_DIR})
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CRYPTO_MAX_INSTANCE_COUNT=${NRF5SDK__NRF_CRYPTO_MAX_INSTANCE_COUNT}")
+	
+	    set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${NRF5SDK__LIB_FILE_CC310})
+	    set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${NRF5SDK__LIB_FILE_OBERON})
 
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CRYPTO_ENABLED=1")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u cc310_backend")
+		set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u cc310_bl_backend")
+		
+	endif(NRF5SDK__CRYPTO_MBEDTLS_ENABLED)
 
-    set(_tmp_all_flags "${_tmp_all_flags} -DMBEDTLS_CONFIG_FILE=${NRF5SDK__MBEDTLS_CONFIG_FILE}")
-    
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CRYPTO_MAX_INSTANCE_COUNT=${NRF5SDK__NRF_CRYPTO_MAX_INSTANCE_COUNT}")
+	include_directories(${NRF5SDK__MBEDTLS_CONFIG_DIR})
 
-    set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${NRF5SDK__LIB_FILE_CC310})
-    set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} ${NRF5SDK__LIB_FILE_OBERON})
-    
+	set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CRYPTO_ENABLED=1")
+	set(_tmp_all_flags "${_tmp_all_flags} -DMBEDTLS_CONFIG_FILE=${NRF5SDK__MBEDTLS_CONFIG_FILE}")
+	
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u nrf_hw_backend")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u cc310_backend")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u cc310_bl_backend")
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u mbedtls_backend")
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u optiga_backend")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u mbedtls_backend")
 
 else()
 

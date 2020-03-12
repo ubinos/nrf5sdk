@@ -904,7 +904,11 @@ uint32_t nrf_tls_init(void)
     UNUSED_RETURN_VALUE(mbedtls_platform_set_calloc_free(wrapper_calloc, nrf_free));
 
 #ifdef MBEDTLS_DEBUG_C
-    mbedtls_debug_set_threshold(2);
+	#if defined(MBEDTLS_DEBUG_C_LEVEL)
+    	mbedtls_debug_set_threshold(MBEDTLS_DEBUG_C_LEVEL);
+	#else
+    	mbedtls_debug_set_threshold(2);
+	#endif
 #endif // MBEDTLS_DEBUG_C
 
     UNUSED_RETURN_VALUE(nrf_drv_rng_init(NULL));

@@ -76,13 +76,25 @@
 
 /** Modify m_broker_addr according to your setup.
  *  The address provided below is a place holder.  */
+#if !defined(IOT_MQTT_LWIP_BROKER_IPV6_0)
+	#define IOT_MQTT_LWIP_BROKER_IPV6_0 0x20010DB8
+#endif
+#if !defined(IOT_MQTT_LWIP_BROKER_IPV6_1)
+	#define IOT_MQTT_LWIP_BROKER_IPV6_1 0x00000000
+#endif
+#if !defined(IOT_MQTT_LWIP_BROKER_IPV6_2)
+	#define IOT_MQTT_LWIP_BROKER_IPV6_2 0x00000000
+#endif
+#if !defined(IOT_MQTT_LWIP_BROKER_IPV6_3)
+	#define IOT_MQTT_LWIP_BROKER_IPV6_3 0x00000001
+#endif
 static const ipv6_addr_t m_broker_addr =
 {
-    .u8 =
-    {0x20, 0x01, 0x0D, 0xB8,
-     0x00, 0x00, 0x00, 0x00,
-     0x00, 0x00, 0x00, 0x00,
-     0x00, 0x00, 0x00, 0x01}
+	.u32 =
+	{HTONL(IOT_MQTT_LWIP_BROKER_IPV6_0),
+	 HTONL(IOT_MQTT_LWIP_BROKER_IPV6_1),
+	 HTONL(IOT_MQTT_LWIP_BROKER_IPV6_2),
+	 HTONL(IOT_MQTT_LWIP_BROKER_IPV6_3)}
 };
 
 #define SCHED_MAX_EVENT_DATA_SIZE           16                                                      /**< Maximum size of scheduler events. */

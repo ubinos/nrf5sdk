@@ -38,9 +38,9 @@
  *
  */
 
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
 #include <ubinos.h>
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
 #include <nrfx.h>
 
@@ -113,14 +113,14 @@ typedef struct
 } uarte_control_block_t;
 static uarte_control_block_t m_cb[NRFX_UARTE_ENABLED_COUNT];
 
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
     static mutex_pt m_nrfx_uarte_mutex;
     #define nrfx_uarte_lock()      mutex_lock(m_nrfx_uarte_mutex)
     #define nrfx_uarte_unlock()    mutex_unlock(m_nrfx_uarte_mutex)
-#else
+#else /* defined(UBINOS_PRESENT) */
     #define nrfx_uarte_lock()
     #define nrfx_uarte_unlock()
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
 static void apply_config(nrfx_uarte_t        const * p_instance,
                          nrfx_uarte_config_t const * p_config)
@@ -215,9 +215,9 @@ nrfx_err_t nrfx_uarte_init(nrfx_uarte_t const *        p_instance,
                            nrfx_uarte_config_t const * p_config,
                            nrfx_uarte_event_handler_t  event_handler)
 {
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
     mutex_create(&m_nrfx_uarte_mutex);
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
     NRFX_ASSERT(p_config);
     uarte_control_block_t * p_cb = &m_cb[p_instance->drv_inst_idx];
@@ -327,7 +327,7 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
         return err_code;
     }
 
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
     bool in_progress = true;
     for (int i = 0; i < 60000; i++) {
         in_progress = nrfx_uarte_tx_in_progress(p_instance);
@@ -337,9 +337,9 @@ nrfx_err_t nrfx_uarte_tx(nrfx_uarte_t const * p_instance,
         task_sleepms(1);
     }
     if (in_progress)
-#else
+#else /* defined(UBINOS_PRESENT) */
     if (nrfx_uarte_tx_in_progress(p_instance))
-#endif
+#endif /* defined(UBINOS_PRESENT) */
     {
         err_code = NRFX_ERROR_BUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",

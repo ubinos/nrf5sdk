@@ -39,7 +39,7 @@
 #define MEMP_MEM_MALLOC             1
 #if !defined(UBINOS_BSP_PRESENT)
 #define MEM_ALIGNMENT               4
-#endif /* defined(UBINOS_BSP_PRESENT) */
+#endif /* !defined(UBINOS_BSP_PRESENT) */
 #define MEM_SIZE                    0
 #define PBUF_POOL_SIZE              32
 #define LWIP_ARP                    0
@@ -133,7 +133,7 @@
 #define PBUF_DEBUG                  LWIP_DBG_OFF
 #define API_LIB_DEBUG               LWIP_DBG_OFF
 #define API_MSG_DEBUG               LWIP_DBG_OFF
-#define SOCKETS_DEBUG               LWIP_DBG_ON
+#define SOCKETS_DEBUG               LWIP_DBG_OFF
 #define ICMP_DEBUG                  LWIP_DBG_OFF
 #define INET_DEBUG                  LWIP_DBG_OFF
 #define IP_DEBUG                    LWIP_DBG_OFF
@@ -143,8 +143,8 @@
 #define MEMP_DEBUG                  LWIP_DBG_OFF
 #define SYS_DEBUG                   LWIP_DBG_OFF
 #define TCP_DEBUG                   LWIP_DBG_OFF
-#define TCP_INPUT_DEBUG             LWIP_DBG_ON
-#define TCP_OUTPUT_DEBUG            LWIP_DBG_ON
+#define TCP_INPUT_DEBUG             LWIP_DBG_OFF
+#define TCP_OUTPUT_DEBUG            LWIP_DBG_OFF
 #define TCP_RTO_DEBUG               LWIP_DBG_OFF
 #define TCP_CWND_DEBUG              LWIP_DBG_OFF
 #define TCP_WND_DEBUG               LWIP_DBG_OFF

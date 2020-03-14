@@ -38,9 +38,9 @@
  *
  */
 
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
 #include <ubinos.h>
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
 #include "sdk_common.h"
 #if NRF_MODULE_ENABLED(NRF_LOG)
@@ -104,14 +104,14 @@ typedef struct
 
 static log_data_t   m_log_data;
 
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
     static mutex_pt m_log_data_mutex;
     #define nrf_log_lock()        if (!bsp_isintr()) { mutex_lock(m_log_data_mutex); }
     #define nrf_log_unlock()      if (!bsp_isintr()) { mutex_unlock(m_log_data_mutex); }
-#else
+#else /* defined(UBINOS_PRESENT) */
     #define nrf_log_lock()
     #define nrf_log_unlock()
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
 NRF_LOG_MODULE_REGISTER();
 
@@ -124,9 +124,9 @@ NRF_LOG_MODULE_REGISTER();
 
 ret_code_t nrf_log_init(nrf_log_timestamp_func_t timestamp_func, uint32_t timestamp_freq)
 {
-#ifdef UBINOS_PRESENT
+#if defined(UBINOS_PRESENT)
     mutex_create(&m_log_data_mutex);
-#endif
+#endif /* defined(UBINOS_PRESENT) */
 
     (void)NRF_LOG_ITEM_DATA_CONST(app);
 

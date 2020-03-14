@@ -41,8 +41,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include <ubinos.h>
-
 #include "nrf.h"
 #include "nrf_drv_clock.h"
 #include "nrf_gpio.h"

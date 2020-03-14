@@ -17,6 +17,8 @@ set_cache_default(NRF5SDK__USE_ALT_TRACE_PIN                                    
 set_cache_default(NRF5SDK__BSP_DEFINES_ONLY                                     FALSE   BOOL "")
 set_cache_default(NRF5SDK__SYSTICK_ENABLED                                      FALSE   BOOL "")
 set_cache_default(NRF5SDK__UART_ENABLED                                         FALSE   BOOL "")
+set_cache_default(NRF5SDK__RTT_ENABLED                                          FALSE   BOOL "")
+set_cache_default(NRF5SDK__CLI_ENABLED                                          FALSE   BOOL "")
 set_cache_default(NRF5SDK__FREERTOS                                             FALSE   BOOL "Include freertos component")
 set_cache_default(NRF5SDK__CRYPTO_ENABLED                                       FALSE   BOOL "")
 set_cache_default(NRF5SDK__CRYPTO_MBEDTLS_ENABLED                               FALSE   BOOL "")
@@ -57,13 +59,32 @@ else()
 endif()
 
 if(UBINOS__BSP__USE_DTTY)
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=1 -DNRF_LOG_BACKEND_DTTY_TEMP_BUFFER_SIZE=64")
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=1 -DNRF_CLI_CMD_BUFF_SIZE=384 -DNRF_CLI_PRINTF_BUFF_SIZE=23 -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_UART_ENABLED=0")
-    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_UART_ENABLED=0")
+
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=1")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_TEMP_BUFFER_SIZE=64")
+    
+	if(NRF5SDK__CLI_ENABLED)
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=1")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_CMD_BUFF_SIZE=384")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_PRINTF_BUFF_SIZE=23")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
+	else()
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=0")
+	endif()
+
+	if(NRF5SDK__UART_ENABLED)
+	    message(FATAL_ERROR "If UBINOS__BSP__USE_DTTY is TRUE, then NRF5SDK__UART_ENABLED must be FALSE")
+	endif()
+	if(NRF5SDK__RTT_ENABLED)
+	    message(FATAL_ERROR "If UBINOS__BSP__USE_DTTY is TRUE, then NRF5SDK__RTT_ENABLED must be FALSE")
+	endif()
+
 else()
+
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_DTTY_ENABLED=0")
+    
     set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_DTTY_ENABLED=0")
+
 endif()
 
 if(NRF5SDK__USE_ALT_TRACE_PIN)
@@ -81,9 +102,41 @@ else()
 endif()
 
 if(NRF5SDK__UART_ENABLED)
-    set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=1 -DNRF_LOG_BACKEND_UART_ENABLED=1")
+    set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=1")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_UART_ENABLED=1")
+    
+	if(NRF5SDK__CLI_ENABLED)
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_UART_ENABLED=1")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_CMD_BUFF_SIZE=384")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_PRINTF_BUFF_SIZE=23")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
+	else()
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_UART_ENABLED=0")
+	endif()
+
 else()
-    set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=0 -DNRF_LOG_BACKEND_UART_ENABLED=0")
+    set(_tmp_all_flags "${_tmp_all_flags} -DUART_ENABLED=0")
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_UART_ENABLED=0")
+    
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_UART_ENABLED=0")
+endif()
+
+if(NRF5SDK__RTT_ENABLED)
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_RTT_ENABLED=1")
+    
+	if(NRF5SDK__CLI_ENABLED)
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_RTT_ENABLED=1")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_CMD_BUFF_SIZE=384")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_PRINTF_BUFF_SIZE=23")
+	    set(_tmp_all_flags "${_tmp_all_flags} -DAPP_TIMER_CONFIG_RTC_FREQUENCY=0")
+	else()
+	    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_RTT_ENABLED=0")
+	endif()
+
+else()
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_LOG_BACKEND_RTT_ENABLED=0")
+    
+    set(_tmp_all_flags "${_tmp_all_flags} -DNRF_CLI_RTT_ENABLED=0")
 endif()
 
 if(NRF5SDK__USBD_ENABLED)
@@ -190,9 +243,9 @@ set(CMAKE_ASM_FLAGS "${_tmp_all_flags} ${CMAKE_ASM_FLAGS}")
 set(CMAKE_C_FLAGS   "${_tmp_all_flags} ${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "${_tmp_all_flags} ${CMAKE_CXX_FLAGS}")
 
-if(NRF5SDK__UART_ENABLED)
+if(NRF5SDK__UART_ENABLED OR NRF5SDK__RTT_ENABLED)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _write")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -u _read")
 
-endif(NRF5SDK__UART_ENABLED)
+endif(NRF5SDK__UART_ENABLED OR NRF5SDK__RTT_ENABLED)

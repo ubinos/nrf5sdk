@@ -422,15 +422,19 @@ if(INCLUDE__NRF5SDK)
 
     if(NOT NRF5SDK__BSP_DEFINES_ONLY)
 
+        set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/bsp/bsp.c)
+
+    endif(NOT NRF5SDK__BSP_DEFINES_ONLY)
+
+    if(NRF5SDK__RTT_ENABLED)
+
         include_directories(${_tmp_source_dir}/nRF5_SDK/external/segger_rtt)
     
-        set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/bsp/bsp.c)
-        
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/segger_rtt/SEGGER_RTT.c)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/segger_rtt/SEGGER_RTT_printf.c)
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/external/segger_rtt/SEGGER_RTT_Syscalls_GCC.c)
 
-    endif(NOT NRF5SDK__BSP_DEFINES_ONLY)
+    endif(NRF5SDK__RTT_ENABLED)
 
     if(UBINOS__BSP__NRF52_SOFTDEVICE_PRESENT)
     

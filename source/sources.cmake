@@ -423,6 +423,7 @@ if(INCLUDE__NRF5SDK)
     if(NOT NRF5SDK__BSP_DEFINES_ONLY)
 
         set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/bsp/bsp.c)
+        set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmp_source_dir}/nRF5_SDK/components/libraries/bsp/bsp_nfc.c)
 
     endif(NOT NRF5SDK__BSP_DEFINES_ONLY)
 

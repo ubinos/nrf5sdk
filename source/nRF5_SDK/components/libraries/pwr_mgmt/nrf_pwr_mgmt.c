@@ -37,6 +37,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+#if defined(UBINOS_PRESENT)
+#include <ubinos.h>
+#endif /* defined(UBINOS_PRESENT) */
+
 #include "sdk_common.h"
 #if NRF_MODULE_ENABLED(NRF_PWR_MGMT)
 
@@ -345,6 +350,7 @@ void nrf_pwr_mgmt_run(void)
     PWR_MGMT_DEBUG_PIN_SET();
 
     // Wait for an event.
+#if (!defined(UBINOS_PRESENT) || (UBINOS__UBIK__TICK_TYPE == UBINOS__UBIK__TICK_TYPE__RTC))
 #ifdef SOFTDEVICE_PRESENT
     if (nrf_sdh_is_enabled())
     {
@@ -354,6 +360,7 @@ void nrf_pwr_mgmt_run(void)
     }
     else
 #endif // SOFTDEVICE_PRESENT
+#endif /* (!defined(UBINOS_PRESENT) || (UBINOS__UBIK__TICK_TYPE == UBINOS__UBIK__TICK_TYPE__RTC)) */
     {
         // Wait for an event.
         __WFE();
